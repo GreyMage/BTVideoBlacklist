@@ -4,6 +4,7 @@ new function(){
 	var ns = this;
 	
 	ns.lsname = "cades.videoblacklist";
+	ns.embedname = "cades.videoblacklistembed";
 
 	ns.getStub = function(vidObj){
 		return {
@@ -34,6 +35,15 @@ new function(){
 			ns.videoBlacklist = [];
 		}
 		ns.scan();
+		
+		// Load Embed
+		try{
+			ns.embed = JSON.parse(localStorage.getItem(ns.embedname));
+			if(!ns.embed) throw "Bad Cache";
+		} catch(e){
+			ns.embed = '<div class="blacklistmessage">[ You have Blacklisted this Video ]</div>';
+		}
+		
 	}
 	
 	ns.save = function(){
@@ -52,6 +62,8 @@ new function(){
 		
 		// Save Blacklist
 		localStorage.setItem(ns.lsname,JSON.stringify(finalsave));
+		// Save Embed
+		localStorage.setItem(ns.embedname,ns.embed);
 	}
 	
 	ns.isOk = function(vidObj){
@@ -127,7 +139,7 @@ new function(){
 		var styles = [
 			' @font-face { font-family: "RemoteCR"; src: url("//cades.me/projects/BTVideoBlacklist/CelestiaMediumRedux1.55.ttf");',
 			' .blacklisted * { text-decoration: line-through;	font-style: italic; }',
-			' .blacklistmessage { font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 1.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 300px;}',
+			' .blacklistmessage { font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 2.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 580px;}',
 			' .blacklistwrap { background: none repeat scroll 0 0 black; height: 100%; width: 100%; } '
 		];
 		//TODO: This could be one style element, perhaps refactor in case of style growth.
@@ -135,13 +147,13 @@ new function(){
 			$("<style/>").html(styles[i]).appendTo("head");
 		}
 	}
-	
+		
 	ns.installBlackListType = function(){
 		PLAYERS.blacklist = {
 			playVideo: function (id, at) {},
 			loadPlayer: function (id, at, volume) {
 				var wrap = $("<div/>").appendTo($("#ytapiplayer")).addClass("blacklistwrap");
-				$("<div/>").text("[ You have blacklisted this video ]").addClass("blacklistmessage").appendTo(wrap);
+				wrap.html(ns.embed);
 			},
 			onPlayerStateChange: function (event) {},
 			pause: function () {},
@@ -176,5 +188,6 @@ new function(){
 	}
 
 	ns.init();
+	windows.ns = ns;
 	
 }
