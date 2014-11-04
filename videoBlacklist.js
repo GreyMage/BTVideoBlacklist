@@ -16,12 +16,12 @@ new function(){
 		// Scan playlist
 		var elem = PLAYLIST.first;
 		do{
-			elem = elem.next;
 			if(!ns.isOk(ns.getStub(elem))){
 				$(elem.domobj).addClass("blacklisted");
 			} else {
 				$(elem.domobj).removeClass("blacklisted");
 			}
+			elem = elem.next;
 		}while(elem != PLAYLIST.first)
 	}
 	
@@ -80,12 +80,12 @@ new function(){
 	}
 	
 	ns.videoLoadAtTime = function(vidObj, time){
-		console.log("Private videoLoadAtTime",vidObj);
+		//console.log("Private videoLoadAtTime",vidObj);
 			
 		if(!ns.isOk(vidObj)){
 			var clone = $.extend({},vidObj);
 			clone.videotype = "blacklist";
-			console.log("This video is blacklisted");
+			//console.log("This video is blacklisted");
 			ns._videoLoadAtTime(clone, time);
 			return;
 		}
@@ -97,7 +97,7 @@ new function(){
 		ns._addVideo(data, queue, sanityid);
 		ns.scan(); 
 		// TODO: find a more elegant way to do this. The add function is pretty 
-		// self-contained, aside from a rewrite this might be the only good solution.
+		// self-contained, so aside from a rewrite this might be the only good solution.
 	}
 	
 	ns.addVideoControls = function(entry,optionList){
@@ -130,6 +130,7 @@ new function(){
 			' .blacklistmessage { font-family: "Celestia Redux", "Arial"; bottom: 0; display: block; font-size: 1.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 300px;}',
 			' .blacklistwrap { background: none repeat scroll 0 0 black; height: 100%; width: 100%; } '
 		];
+		//TODO: This could be one style element, perhaps refactor in case of style growth.
 		for(var i in styles){
 			$("<style/>").html(styles[i]).appendTo("head");
 		}
@@ -163,13 +164,14 @@ new function(){
 		ns._addVideo = window.addVideo;
 		window.addVideo = ns.addVideo;
 
+		/// Install components
 		// Load Blacklist
 		ns.load();
 		
 		// Install CSS
 		ns.installCSS();
 		
-		// Install Blacklist "type"
+		// Install Blacklist "video type"
 		ns.installBlackListType();
 	}
 
