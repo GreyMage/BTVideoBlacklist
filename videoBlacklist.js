@@ -174,6 +174,5 @@ new function(){
 	}
 
 	ns.init();
-	window.ns = ns;
 	
 }
