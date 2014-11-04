@@ -139,8 +139,8 @@ new function(){
 		var styles = [
 			' @font-face { font-family: "RemoteCR"; src: url("//cades.me/projects/BTVideoBlacklist/CelestiaMediumRedux1.55.ttf");',
 			' .blacklisted * { text-decoration: line-through;	font-style: italic; }',
-			' .blacklistmessage { font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 2.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 580px;}',
-			' .blacklistwrap { background: none repeat scroll 0 0 black; height: 100%; width: 100%; } '
+			' .blacklistmessage { text-shadow: 0 0 10px black; font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 2.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 580px;}',
+			' .blacklistwrap { background-color: black; background-position: center center; background-repeat: no-repeat; background-size: auto 70%; background-image: url("//cades.me/projects/BTVideoBlacklist/bp_cutiemark.svg"); height: 100%; width: 100%; } '
 		];
 		//TODO: This could be one style element, perhaps refactor in case of style growth.
 		for(var i in styles){
