@@ -188,6 +188,5 @@ new function(){
 	}
 
 	ns.init();
-	windows.ns = ns;
 	
 }
