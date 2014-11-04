@@ -13,6 +13,7 @@ new function(){
 	}
 	
 	ns.scan = function(){
+		// Scan playlist
 		var elem = PLAYLIST.first;
 		do{
 			if(!ns.isOk(ns.getStub(elem))){
