@@ -125,9 +125,9 @@ new function(){
 	
 	ns.installCSS = function(){
 		var styles = [
-			//' @font-face { font-family: "Celestia Redux"; src: url("//github.com/GreyMage/BTVideoBlacklist/raw/master/CelestiaMediumRedux1.55.ttf");',
+			' @font-face { font-family: "RemoteCR"; src: url("//cades.me/projects/BTVideoBlacklist/CelestiaMediumRedux1.55.ttf");',
 			' .blacklisted * { text-decoration: line-through;	font-style: italic; }',
-			' .blacklistmessage { font-family: "Celestia Redux", "Arial"; bottom: 0; display: block; font-size: 1.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 300px;}',
+			' .blacklistmessage { font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 1.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 300px;}',
 			' .blacklistwrap { background: none repeat scroll 0 0 black; height: 100%; width: 100%; } '
 		];
 		//TODO: This could be one style element, perhaps refactor in case of style growth.
