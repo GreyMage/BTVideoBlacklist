@@ -7,7 +7,7 @@ new function(){
 	ns.embedname = "cades.videoblacklistembed";
 
 	ns.getStub = function(vidObj){
-		if(vidObj.videoid && vidObj.videotype) return {
+		if(vidObj && vidObj.videoid && vidObj.videotype) return {
 			videoid:vidObj.videoid,
 			videotype:vidObj.videotype
 		}
