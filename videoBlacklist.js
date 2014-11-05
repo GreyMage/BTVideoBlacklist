@@ -7,10 +7,12 @@ new function(){
 	ns.embedname = "cades.videoblacklistembed";
 
 	ns.getStub = function(vidObj){
-		return {
+		if(vidObj.videoid && vidObj.videotype) return {
 			videoid:vidObj.videoid,
 			videotype:vidObj.videotype
 		}
+		
+		return {};
 	}
 	
 	ns.scan = function(){
