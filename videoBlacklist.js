@@ -189,6 +189,12 @@ new function(){
 		ns.installBlackListType();
 	}
 
-	ns.init();
+	ns.waitReady = function(){
+		waitForFlag("PLREADY",function(){
+			ns.init();
+		});
+	}
+	
+	ns.waitReady();
 	
 }
