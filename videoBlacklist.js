@@ -5,6 +5,7 @@ new function(){
 	
 	ns.lsname = "cades.videoblacklist";
 	ns.embedname = "cades.videoblacklistembed";
+	ns.metricsname = "cades.videoblacklistmetrics";
 
 	ns.getStub = function(vidObj){
 		if(vidObj && vidObj.videoid && vidObj.videotype) return {
@@ -28,6 +29,37 @@ new function(){
 		}while(elem != PLAYLIST.first)
 	}
 	
+	ns.showMetricsMenu = function(){
+	
+		var wrap = $("<div/>");
+		var inner = wrap.dialogWindow({
+			title:"Video Blacklist",
+			center:true,
+		});
+		inner.width(460);
+		var greeting = $("<div/>").html('<p>Hey! Thanks for trying my video blacklist plugin. This plugin has the ability to send me anonymous metrics on how its used, and what videos get blocked by people. Again, all data is anonymous and cannot be tied back to any particular user. The source code is freely available to view if there are any security concerns.</p><ul><li><a target="_blank" href="https://github.com/GreyMage/BTVideoBlacklist">BTVideoBlacklist</a></li><li><a  target="_blank" href="https://github.com/GreyMage/BTVideoBlacklistSrv">BTVideoBlacklistSrv</a></li></ul><p>Would you would like to participate?</p>');
+
+		var btnbar = $("<div/>");
+		var okbtn = $("<button/>").text("YES"); var okwrap = $("<div/>").append(okbtn).appendTo(btnbar).addClass("bl_optwrap");
+		var nobtn = $("<button/>").text("NO"); var nowrap = $("<div/>").append(nobtn).appendTo(btnbar).addClass("bl_optwrap");
+		greeting.appendTo(inner);
+		btnbar.appendTo(inner).append($("<div/>").css("clear","both"));
+		inner.window.center();
+		
+		okbtn.click(function(){
+			inner.window.close();
+			ns.metrics.allow = true;
+			ns.save();
+		});
+		
+		nobtn.click(function(){
+			inner.window.close();
+			ns.metrics.allow = false;
+			ns.save();
+		});
+		
+	}
+	
 	ns.load = function(){
 		// Load Blacklist
 		try{
@@ -44,6 +76,15 @@ new function(){
 			if(!ns.embed) throw "Bad Cache";
 		} catch(e){
 			ns.embed = '<div class="blacklistmessage">[ You have Blacklisted this Video ]</div>';
+		}
+		
+		// Load Metrics
+		try{
+			ns.metrics = JSON.parse(localStorage.getItem(ns.metricsname));
+			if(!ns.metrics) throw "Bad Cache";
+		} catch(e){
+			ns.showMetricsMenu();
+			ns.metrics = {allow:false};
 		}
 		
 	}
@@ -66,6 +107,8 @@ new function(){
 		localStorage.setItem(ns.lsname,JSON.stringify(finalsave));
 		// Save Embed
 		localStorage.setItem(ns.embedname,ns.embed);
+		// Save Metrics
+		localStorage.setItem(ns.embedname,JSON.stringify(ns.metrics));
 	}
 	
 	ns.isOk = function(vidObj){
