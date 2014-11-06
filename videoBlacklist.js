@@ -47,15 +47,15 @@ new function(){
 		inner.window.center();
 		
 		okbtn.click(function(){
-			inner.window.close();
 			ns.metrics.allow = true;
 			ns.save();
+			inner.window.close();
 		});
 		
 		nobtn.click(function(){
-			inner.window.close();
 			ns.metrics.allow = false;
 			ns.save();
+			inner.window.close();
 		});
 		
 	}
@@ -108,7 +108,7 @@ new function(){
 		// Save Embed
 		localStorage.setItem(ns.embedname,ns.embed);
 		// Save Metrics
-		localStorage.setItem(ns.embedname,JSON.stringify(ns.metrics));
+		localStorage.setItem(ns.metricsname,JSON.stringify(ns.metrics));
 	}
 	
 	ns.isOk = function(vidObj){
