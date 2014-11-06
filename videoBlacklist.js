@@ -144,7 +144,7 @@ new function(){
 			' .blacklistmessage { text-shadow: 0 0 10px black; font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 2.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 580px;}',
 			' .blacklistwrap { background-color: black; background-position: center center; background-repeat: no-repeat; background-size: auto 70%; background-image: url("//cades.me/projects/BTVideoBlacklist/bp_cutiemark.svg"); height: 100%; width: 100%; } ',
 			' .bl_optwrap { float: left; width: 50%; }',
-			' .bl_optwrap button { width: 100%; display: inline-block; height: 40px; }'
+			' .bl_optwrap button { width: 90%; display: block; height: 40px; margin: 0px auto 10px; }'
 		];
 		//TODO: This could be one style element, perhaps refactor in case of style growth.
 		for(var i in styles){
