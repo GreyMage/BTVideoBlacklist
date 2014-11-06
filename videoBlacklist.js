@@ -65,7 +65,7 @@ new function(){
 		var mid = localStorage.getItem(ns.metricsidname);
 		if(!mid){
 		  localStorage.setItem(ns.metricsidname,ns.uid(36));
-		  return getMetricsId();
+		  return ns.getMetricsId();
 		}
 		return mid;
 	}
@@ -133,11 +133,12 @@ new function(){
 	}
 	
 	ns.waitForIo = function(callback){
-		if(window.io) callback();
-		else {
-			setTimeout(100,function(){
+		if(window.io){
+			callback();
+		} else {
+			setTimeout(function(){
 				ns.waitForIo(callback);
-			})
+			},100);
 		}
 	}
 	
