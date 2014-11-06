@@ -120,8 +120,6 @@ new function(){
 					});
 				});
 			});
-			
-			ns.socket = io("http://cades.me:8181");
 		}
 		
 	}
