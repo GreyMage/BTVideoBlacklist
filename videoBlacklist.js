@@ -115,7 +115,7 @@ new function(){
 				ns.socket.on('connect', function () {
 					ns.socket.emit("identify",{mid:ns.getMetricsId()},function(success,msg){
 						if(success){
-							ns.sendMetrics();
+							//ns.sendMetrics();
 						}
 					});
 				});
