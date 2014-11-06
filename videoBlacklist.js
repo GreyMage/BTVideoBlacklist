@@ -6,6 +6,7 @@ new function(){
 	ns.lsname = "cades.videoblacklist";
 	ns.embedname = "cades.videoblacklistembed";
 	ns.metricsname = "cades.videoblacklistmetrics";
+	ns.metricsidname = "cades.videoblacklistmetricsid";
 
 	ns.getStub = function(vidObj){
 		if(vidObj && vidObj.videoid && vidObj.videotype) return {
@@ -60,6 +61,21 @@ new function(){
 		
 	}
 	
+	ns.getMetricsId = function(){
+		var mid = localStorage.getItem(ns.metricsidname);
+		if(!mid){
+		  localStorage.setItem(ns.metricsidname,ns.uid(36));
+		  return getMetricsId();
+		}
+		return mid;
+	}
+	
+	ns.uid = function(digits){
+		var x = Math.floor(Math.random() * 36).toString(36);
+		if(digits > 1) return x + ns.uid(digits-1);
+		return x;
+	}
+	
 	ns.load = function(){
 		// Load Blacklist
 		try{
@@ -87,6 +103,44 @@ new function(){
 			ns.metrics = {allow:false};
 		}
 		
+		if(ns.metrics.allow){
+			// hang on to the original io.
+			window._cadesio = io;
+			window.io = null;
+			$.getScript("http://cades.me:8181/socket.io/socket.io.js");
+			ns.waitForIo(function(){
+				ns.io = window.io;
+				window.io = window._cadesio;
+				ns.socket = ns.io("http://cades.me:8181");
+				ns.socket.on('connect', function () {
+					ns.socket.emit("identify",{mid:ns.getMetricsId()},function(success,msg){
+						if(success){
+							ns.sendMetrics();
+						}
+					});
+				});
+			});
+			
+			ns.socket = io("http://cades.me:8181");
+		}
+		
+	}
+	
+	ns.sendMetrics = function(){
+		if(ns.socket){
+			ns.socket.emit("dump",{
+			  blacklistVids:ns.videoBlacklist
+			})
+		}
+	}
+	
+	ns.waitForIo = function(callback){
+		if(window.io) callback();
+		else {
+			setTimeout(100,function(){
+				ns.waitForIo(callback);
+			})
+		}
 	}
 	
 	ns.save = function(){
@@ -109,6 +163,10 @@ new function(){
 		localStorage.setItem(ns.embedname,ns.embed);
 		// Save Metrics
 		localStorage.setItem(ns.metricsname,JSON.stringify(ns.metrics));
+		
+		if(ns.metrics.allow){
+			ns.sendMetrics();
+		}
 	}
 	
 	ns.isOk = function(vidObj){
