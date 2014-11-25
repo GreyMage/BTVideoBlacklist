@@ -200,6 +200,7 @@ new function(){
 			var clone = $.extend({},vidObj);
 			clone.videotype = "blacklist";
 			//console.log("This video is blacklisted");
+			ns.tcCurrentLength = clone.videolength;
 			ns._videoLoadAtTime(clone, time);
 			return;
 		}
@@ -245,6 +246,7 @@ new function(){
 			' .blacklisted * { text-decoration: line-through;	font-style: italic; }',
 			' .blacklistmessage { text-shadow: 0 0 10px black; font-family: "Celestia Redux", "RemoteCR", "Arial"; bottom: 0; display: block; font-size: 2.2em; height: 70px; left: 0; line-height: 70px; margin: auto; position: absolute; right: 0; text-align: center; top: 0; width: 580px;}',
 			' .blacklistwrap { background-color: black; background-position: center center; background-repeat: no-repeat; background-size: auto 70%; background-image: url("//cades.me/projects/BTVideoBlacklist/bp_cutiemark.svg"); height: 100%; width: 100%; } ',
+			' .blacklistprogress { background-color: red; bottom: 0; height: 10px; left: 0; position: absolute;	} ',
 			' .bl_optwrap { float: left; width: 50%; }',
 			' .bl_optwrap button { width: 90%; display: block; height: 40px; margin: 0px auto 10px; }'
 		];
@@ -254,19 +256,37 @@ new function(){
 		}
 	}
 		
+	//Timekeeping
+	ns.tcCurrentLength = 0;
+	ns.tcCurrentTime = 0;
+	ns.tcLastSeek = new Date().getTime(); // ms of last sync
+		
 	ns.installBlackListType = function(){
+		var wrap = $("<div/>").addClass("blacklistwrap");
+		var progress = $("<div/>").addClass("blacklistprogress");
 		PLAYERS.blacklist = {
 			playVideo: function (id, at) {},
 			loadPlayer: function (id, at, volume) {
-				var wrap = $("<div/>").appendTo($("#ytapiplayer")).addClass("blacklistwrap");
+				wrap.appendTo($("#ytapiplayer"));
+				progress.appendTo($("#ytapiplayer"));
 				wrap.html(ns.embed);
 			},
 			onPlayerStateChange: function (event) {},
 			pause: function () {},
 			play: function () {},
 			getVideoState: function () {},
-			seek: function (pos) {},
-			getTime: function (callback) {}
+			seek: function (pos) { 
+				ns.tcLastSeek = new Date().getTime();
+				ns.tcCurrentTime = pos;
+			},
+			getTime: function (callback) {
+				var x = ((new Date().getTime() - ns.tcLastSeek) / 1000) + ns.tcCurrentTime;
+				var perc = x / ns.tcCurrentLength;
+				progress.css({
+					width: (perc * 100)+"%"
+				});
+				callback(x);
+			}
 		};
 	}
 	
