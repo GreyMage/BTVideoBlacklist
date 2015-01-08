@@ -267,6 +267,7 @@ new function(){
 		PLAYERS.blacklist = {
 			playVideo: function (id, at) {},
 			loadPlayer: function (id, at, volume) {
+				ns.tcLastSeek = new Date().getTime();
 				ns.tcCurrentTime = at;
 				wrap.appendTo($("#ytapiplayer"));
 				progress.appendTo($("#ytapiplayer"));
